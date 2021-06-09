@@ -55,9 +55,10 @@ public class NotesController {
     }
 
     @DeleteMapping("/note")
-    public void deleteNote(@RequestParam int id) {
+    public int deleteNote(@RequestParam int id) {
         if (noteRepository.existsById(id)) {
             noteRepository.deleteById(id);
+            return id;
         } else {
             throw new NoteNotFoundException();
         }
