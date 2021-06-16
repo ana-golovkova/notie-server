@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -16,14 +17,15 @@ public class NotesController {
 
 
     @GetMapping("/notes")
-    public List<Note> getNotes() {
+    @ResponseBody
+    public Map<Integer, Note> getNotes() {
 
         Iterable<NoteEntity> noteEntities = noteRepository.findAll();
 
         List<NoteEntity> noteEntityList = new ArrayList<>();
         noteEntities.forEach(noteEntityList::add);
 
-        return noteEntityList.stream().map(NoteMapper::mapEntityToDomain).collect(Collectors.toList());
+        return noteEntityList.stream().map(NoteMapper::mapEntityToDomain).collect(Collectors.toMap(Note::getId, note -> note));
 
     }
 
